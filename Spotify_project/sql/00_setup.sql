@@ -1,4 +1,4 @@
--- 00_SETUP.SQL
+--data cleaning
 -- Spotify User Behavior Project
 
 -- 1. CREATE DATABASE
