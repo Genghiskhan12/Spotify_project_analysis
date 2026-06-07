@@ -1,50 +1,75 @@
 USE spotify_dataset;
 
--- Preview dataset
+-- Create backup copy
+
+DROP TABLE IF EXISTS spotify_data_dub;
+
+CREATE TABLE spotify_data_dub
+LIKE spotify_data;
+
+INSERT INTO spotify_data_dub
+SELECT *
+FROM spotify_data;
+
+-- Check missing values
 
 SELECT *
 FROM spotify_data
-LIMIT 10;
+WHERE
+    age IS NULL OR age = ''
+    OR gender IS NULL OR gender = ''
+    OR spotify_usage_period IS NULL OR spotify_usage_period = ''
+    OR spotify_listening_device IS NULL OR spotify_listening_device = ''
+    OR spotify_subscription_plan IS NULL OR spotify_subscription_plan = ''
+    OR premium_sub_willingness IS NULL OR premium_sub_willingness = ''
+    OR preffered_premium_plan IS NULL OR preffered_premium_plan = ''
+    OR preferred_listening_content IS NULL OR preferred_listening_content = ''
+    OR fav_music_genre IS NULL OR fav_music_genre = ''
+    OR music_time_slot IS NULL OR music_time_slot = ''
+    OR music_Influencial_mood IS NULL OR music_Influencial_mood = ''
+    OR music_lis_frequency IS NULL OR music_lis_frequency = ''
+    OR music_expl_method IS NULL OR music_expl_method = ''
+    OR music_recc_rating IS NULL
+    OR pod_lis_frequency IS NULL OR pod_lis_frequency = ''
+    OR fav_pod_genre IS NULL OR fav_pod_genre = ''
+    OR preffered_pod_format IS NULL OR preffered_pod_format = ''
+    OR pod_host_preference IS NULL OR pod_host_preference = ''
+    OR preffered_pod_duration IS NULL OR preffered_pod_duration = ''
+    OR pod_variety_satisfaction IS NULL OR pod_variety_satisfaction = '';
 
-
-
--- Check total number of rows
-
-SELECT COUNT(*) AS total_rows
-FROM spotify_data;
-
-
-
--- Check for missing values
-
-SELECT
-    SUM(CASE WHEN age IS NULL OR age = '' THEN 1 ELSE 0 END) AS missing_age,
-    SUM(CASE WHEN gender IS NULL OR gender = '' THEN 1 ELSE 0 END) AS missing_gender,
-    SUM(CASE WHEN spotify_subscription_plan IS NULL OR spotify_subscription_plan = '' THEN 1 ELSE 0 END) AS missing_subscription_plan,
-    SUM(CASE WHEN fav_music_genre IS NULL OR fav_music_genre = '' THEN 1 ELSE 0 END) AS missing_music_genre,
-    SUM(CASE WHEN pod_lis_frequency IS NULL OR pod_lis_frequency = '' THEN 1 ELSE 0 END) AS missing_podcast_frequency
-FROM spotify_data;
-
-
-
--- Check unique age groups
+-- Check categorical values
 
 SELECT DISTINCT age
 FROM spotify_data;
 
+SELECT DISTINCT gender
+FROM spotify_data;
 
-
--- Check unique subscription plans
+SELECT DISTINCT spotify_usage_period
+FROM spotify_data;
 
 SELECT DISTINCT spotify_subscription_plan
 FROM spotify_data;
 
+SELECT DISTINCT premium_sub_willingness
+FROM spotify_data;
 
+SELECT DISTINCT preferred_listening_content
+FROM spotify_data;
 
--- Check duplicate rows
+SELECT DISTINCT music_time_slot
+FROM spotify_data;
 
-SELECT *,
-       COUNT(*) AS duplicate_count
+SELECT DISTINCT pod_lis_frequency
+FROM spotify_data;
+
+-- Check duplicates
+
+SELECT
+    age,
+    gender,
+    spotify_subscription_plan,
+    COUNT(*) AS duplicate_count
 FROM spotify_data
 GROUP BY
     age,
@@ -69,10 +94,7 @@ GROUP BY
     pod_variety_satisfaction
 HAVING COUNT(*) > 1;
 
+-- Final validation
 
-
--- Standardize inconsistent age values
-
-UPDATE spotify_data
-SET age = '12-20'
-WHERE age = '20-Dec';
+SELECT COUNT(*) AS total_rows
+FROM spotify_data;
