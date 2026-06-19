@@ -42,6 +42,27 @@ Analyze key factors influencing Spotify user behavior, including music listening
 - SQL (MySQL)
 - Power BI
 - GitHub
+---
+
+## How to Load Dataset (IMPORTANT)
+
+Before running SQL analysis, you must load the dataset into MySQL.
+
+### Option 1 — MySQL Workbench Data Import Wizard (Recommended)
+
+1. Open **MySQL Workbench**
+2. Go to:
+
+Server → Data Import → Table Data Import Wizard
+
+3. Select file:
+
+data/spotify_user_behavior.csv
+
+4. Choose:
+- Database: `spotify_dataset`
+- Table: `spotify_data`
+5. Click **Finish**
 
 ---
 
