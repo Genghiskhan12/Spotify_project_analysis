@@ -1,64 +1,39 @@
 USE spotify_dataset;
 
--- Users by age group
+-- User segmentation analysis
 
 SELECT 
-    age,
-    COUNT(*) AS age_count
+    CASE
+        WHEN music_lis_frequency = 'Rarely'
+             AND pod_lis_frequency = 'Never'
+        THEN 'Casual User'
+
+        WHEN preferred_listening_content = 'Music'
+             AND music_recc_rating >= 4
+        THEN 'Music Power User'
+
+        WHEN pod_lis_frequency IN ('Daily', 'Several times a week')
+        THEN 'Podcast Enthusiast'
+
+        WHEN premium_sub_willingness = 'Yes'
+             AND music_recc_rating >= 4
+        THEN 'Premium Likely User'
+
+        ELSE 'Regular User'
+    END AS user_segment,
+
+    COUNT(*) AS total_users,
+
+    ROUND(
+        COUNT(*) * 100.0 /
+        (SELECT COUNT(*) FROM spotify_data),
+        2
+    ) AS percentage_share
+
 FROM spotify_data
-GROUP BY age
-ORDER BY age_count DESC;
+GROUP BY user_segment
+ORDER BY total_users DESC;
 
--- Users aged 20-35 represent the largest user segment.
-
-
-
--- Users by gender
-
-SELECT 
-    gender,
-    COUNT(*) AS gender_count
-FROM spotify_data
-GROUP BY gender
-ORDER BY gender_count DESC;
-
--- Female users dominate the dataset population.
-
-
-
--- Most popular listening devices
-
-SELECT 
-    spotify_listening_device,
-    COUNT(*) AS device_count
-FROM spotify_data
-GROUP BY spotify_listening_device
-ORDER BY device_count DESC;
-
--- Smartphones are the most commonly used listening device.
-
-
-
--- Preferred listening content
-
-SELECT 
-    preferred_listening_content,
-    COUNT(*) AS content_count
-FROM spotify_data
-GROUP BY preferred_listening_content
-ORDER BY content_count DESC;
-
--- Most users prefer music over podcasts.
-
-
-
--- Subscription plan distribution
-
-SELECT 
-    spotify_subscription_plan,
-    COUNT(*) AS subscription_count
-FROM spotify_data
-GROUP BY spotify_subscription_plan
-ORDER BY subscription_count DESC;
-
--- Most users use Spotify without a paid subscription.
+-- The user base is primarily focused on music consumption.
+-- A large portion of users remain behaviorally undefined, indicating opportunities for stronger personalization and engagement strategies.
+-- Premium-oriented users represent a relatively small share of the audience, suggesting additional analysis is needed to understand conversion drivers.
