@@ -4,6 +4,7 @@ USE spotify_dataset;
 
 SELECT 
     age,
+
     SUM(CASE 
         WHEN spotify_subscription_plan = 'Premium (paid subscription)' 
         THEN 1 ELSE 0 
@@ -14,13 +15,22 @@ SELECT
         THEN 1 ELSE 0 
     END) AS free_count,
 
-    COUNT(*) AS total_count
+    COUNT(*) AS total_count,
+
+    ROUND(
+        SUM(CASE 
+            WHEN spotify_subscription_plan = 'Premium (paid subscription)' 
+            THEN 1 ELSE 0 
+        END) * 100.0 / COUNT(*),
+    2) AS premium_rate
 
 FROM spotify_data
 GROUP BY age
-ORDER BY premium_count DESC;
+ORDER BY premium_rate DESC;
 
--- Users aged 20-35 have the highest number of premium subscriptions.
+-- Users aged 12-20 and 35-60 show relatively higher Premium conversion rates,
+-- while users aged 20-35 account for the largest number of Premium subscribers
+-- due to their dominant share in the dataset.
 
 
 
@@ -39,14 +49,22 @@ SELECT
         THEN 1 ELSE 0 
     END) AS free_count,
 
-    COUNT(*) AS total_count
+    COUNT(*) AS total_count,
+
+    ROUND(
+        SUM(CASE 
+            WHEN spotify_subscription_plan = 'Premium (paid subscription)' 
+            THEN 1 ELSE 0 
+        END) * 100.0 / COUNT(*),
+    2) AS premium_rate
 
 FROM spotify_data
 GROUP BY gender
-ORDER BY premium_count DESC;
+ORDER BY premium_rate DESC;
 
--- Female users have the highest number of premium subscriptions.
-
+-- Male users show a relatively higher Premium conversion rate,
+-- while female users account for the largest number of Premium subscribers
+-- due to their larger representation in the dataset.
 
 
 -- Premium subscription by listening device
@@ -64,15 +82,22 @@ SELECT
         THEN 1 ELSE 0 
     END) AS free_count,
 
-    COUNT(*) AS total_count
+    COUNT(*) AS total_count,
+
+    ROUND(
+        SUM(CASE 
+            WHEN spotify_subscription_plan = 'Premium (paid subscription)' 
+            THEN 1 ELSE 0 
+        END) * 100.0 / COUNT(*),
+    2) AS premium_rate
 
 FROM spotify_data
 GROUP BY spotify_listening_device
-ORDER BY premium_count DESC;
+ORDER BY premium_rate DESC;
 
 -- Smartphone, smart speaker, and computer users show the highest premium subscription counts.
-
-
+-- But not in absolute values, Computer or laptop, Wearable devices show 80% premium or Smartphone, Computer or laptop, Smart 
+-- speakers or voice assistants show 71.43%.
 
 -- Premium subscription by music genre
 
