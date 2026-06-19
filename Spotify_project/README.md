@@ -66,6 +66,23 @@ data/spotify_user_behavior.csv
 
 ---
 
+## Data Validation Approach
+
+To ensure data integrity, a duplicate table was created for validation purposes:
+
+```sql id="dup2"
+CREATE TABLE spotify_data_dub
+LIKE spotify_data;
+
+INSERT INTO spotify_data_dub
+SELECT * FROM spotify_data;
+Purpose:
+Performed initial data checks on a separate copy
+Verified missing values, duplicates, and category consistency
+Confirmed dataset quality before final analysis
+
+After validation, the analysis was performed on the original table (spotify_data) since no critical issues were found.
+
 # 1. User Segmentation
 
 ## Age Distribution vs Subscription
