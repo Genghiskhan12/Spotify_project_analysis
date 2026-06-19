@@ -92,16 +92,16 @@ Analyze key factors influencing Spotify user behavior, including music listening
 
 ## Device Usage vs Subscription (Top categories shown)
 
-| Device | Premium Count | Free Count | Total Count |
-|--------|--------------|------------|-------------|
-| Smartphone | 27 | 273 | 300 |
-| Smart speakers / voice assistants | 18 | 25 | 43 |
-| Computer / laptop | 15 | 39 | 54 |
+| Device | Count | Percentage |
+|--------|------|------------|
+| Smartphone | 300 | 57.7% |
+| Computer or laptop | 54 | 10.4% |
+| Smartphone + Computer (multi-device users) | 48 | 9.2% |
 
 ### Key Insight
-- Smartphones are the dominant listening device, indicating mobile-first usage behavior
-- Smart speaker users show relatively stronger Premium engagement within a smaller segment
-- Desktop usage is less common compared to mobile devices
+- Smartphones are the dominant listening device, showing strong mobile-first behavior
+- A noticeable share of users use multiple devices, indicating cross-platform listening habits
+- Desktop usage is significantly lower compared to mobile usage
 
 ---
 
