@@ -66,7 +66,7 @@ data/spotify_user_behavior.csv
 
 ---
 
-##Data validation approach
+## Data validation approach
 To ensure data integrity, a duplicate table was created for validation purposes:
 create spotify_data_dub like spotify_data;
 
