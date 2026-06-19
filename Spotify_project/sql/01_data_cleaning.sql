@@ -1,9 +1,7 @@
 USE spotify_dataset;
+-- DATA QUALITY CHECKS
 
--- Create backup copy
-
-DROP TABLE IF EXISTS spotify_data_dub;
-
+Create backup copy
 CREATE TABLE spotify_data_dub
 LIKE spotify_data;
 
@@ -11,7 +9,7 @@ INSERT INTO spotify_data_dub
 SELECT *
 FROM spotify_data;
 
--- Check missing values
+-- CHECK MISSING VALUES
 
 SELECT *
 FROM spotify_data
@@ -37,39 +35,21 @@ WHERE
     OR preffered_pod_duration IS NULL OR preffered_pod_duration = ''
     OR pod_variety_satisfaction IS NULL OR pod_variety_satisfaction = '';
 
--- Check categorical values
+-- CHECK CATEGORICAL VALUES
 
-SELECT DISTINCT age
-FROM spotify_data;
+SELECT DISTINCT age FROM spotify_data;
+SELECT DISTINCT gender FROM spotify_data;
+SELECT DISTINCT spotify_usage_period FROM spotify_data;
+SELECT DISTINCT spotify_subscription_plan FROM spotify_data;
+SELECT DISTINCT premium_sub_willingness FROM spotify_data;
+SELECT DISTINCT preferred_listening_content FROM spotify_data;
+SELECT DISTINCT music_time_slot FROM spotify_data;
+SELECT DISTINCT pod_lis_frequency FROM spotify_data;
 
-SELECT DISTINCT gender
-FROM spotify_data;
+-- CHECK DUPLICATES
 
-SELECT DISTINCT spotify_usage_period
-FROM spotify_data;
-
-SELECT DISTINCT spotify_subscription_plan
-FROM spotify_data;
-
-SELECT DISTINCT premium_sub_willingness
-FROM spotify_data;
-
-SELECT DISTINCT preferred_listening_content
-FROM spotify_data;
-
-SELECT DISTINCT music_time_slot
-FROM spotify_data;
-
-SELECT DISTINCT pod_lis_frequency
-FROM spotify_data;
-
--- Check duplicates
-
-SELECT
-    age,
-    gender,
-    spotify_subscription_plan,
-    COUNT(*) AS duplicate_count
+SELECT *,
+       COUNT(*) AS duplicate_count
 FROM spotify_data
 GROUP BY
     age,
@@ -94,7 +74,7 @@ GROUP BY
     pod_variety_satisfaction
 HAVING COUNT(*) > 1;
 
--- Final validation
+-- FINAL CHECK
 
 SELECT COUNT(*) AS total_rows
 FROM spotify_data;
